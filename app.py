@@ -4,7 +4,8 @@ import threading
 import webbrowser
 from flask import Flask, render_template, request,session
 from db import Database
-from datetime import date,time
+from datetime import date
+import time
 from summerizer import Summarizer
 
 if getattr(sys, 'frozen', False):
