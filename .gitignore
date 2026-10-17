@@ -13,6 +13,7 @@ env/
 build/
 dist/
 *.spec
+qwen_model/
 
 # Local database
 finance.db

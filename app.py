@@ -15,7 +15,7 @@ else:
 template_folder = os.path.join(base_path, 'templates')
 app=Flask(__name__, template_folder=template_folder)
 app.secret_key = 'secret'
-summarizer=Summarizer()
+summarizer=None
 @app.route("/")
 def base():
     return render_template("base.html")
@@ -50,8 +50,8 @@ def setup():
             Database().delete_tasks(delete)
         else:
             task=request.form.get("task")
-            start=f"{request.form.get("start-hrs")}:{request.form.get("start-min") or "00"}"
-            end=f"{request.form.get("end-hrs")}:{request.form.get("end-min") or "00"}"
+            start=f"{request.form.get('start-hrs')}:{request.form.get('start-min') or '00'}"
+            end=f"{request.form.get('end-hrs')}:{request.form.get('end-min') or '00'}"
             Database().add_task(session.get("username"),task,start,end)
     return render_template("setup.html",data=Database().fetch_tasks(session.get("username")),username=session.get("username"))
 
@@ -73,6 +73,11 @@ def history():
 
 @app.route("/summary")
 def summary():
+    global summarizer
+    if summarizer is None:
+        print("Loading AI model... (This takes 30 seconds)")
+        from summerizer import Summarizer
+        summarizer = Summarizer()
     tasks=Database().fetch_tasks(session.get("username"))
     checks=Database().get_all_checks(session.get("username"))
     data=[[row['id'],row['task'],row['start'],row['end']] for row in tasks]
@@ -80,7 +85,7 @@ def summary():
     return render_template("summary.html",summary=summary)
 
 def open_browser():
-    time.sleep(1.5)
+    time.sleep(5)
     webbrowser.open("http://127.0.0.1:5000")
 if __name__ == "__main__":
     threading.Thread(target=open_browser, daemon=True).start()

@@ -2,11 +2,17 @@ import torch
 from transformers import AutoTokenizer, AutoModelForCausalLM
 import os
 import sys
+from unittest.mock import MagicMock
+
 
 class Summarizer:
     def __init__(self,model_name="Qwen/Qwen2.5-0.5B-Instruct"):
         print("This might take some time.")
         print("Loading...")
+        mock_tv = MagicMock()
+        mock_tv.transforms.InterpolationMode.BILINEAR = 0
+        sys.modules["torchvision"] = mock_tv
+        sys.modules["torchvision.transforms"] = mock_tv.transforms
         self.device="cuda" if torch.cuda.is_available() else "cpu"
 
         if getattr(sys, 'frozen', False):
