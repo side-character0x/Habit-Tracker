@@ -1,0 +1,30 @@
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-widht, initial-size=1.0">
+    <title>Schedule Setup</title>
+</head>
+<body style="background-color: #F9F6F0;">
+    <h1 style="text-align: center;font-size: 3.5vw;padding-top: 3vh;">Let's Setup Your Daily Schedule</h1>
+    <form action="/setup" method="post">
+    <table style="text-align: center;">
+    <tr><td>Task name</td><td>Start</td><td>End</td></tr>
+    <tr><td><input type="text" name="task" required></td><td><input type="number" name="start-hrs" placeholder="Hrs" style="width: 4vw;" required>:<input type="number" name="start-min" placeholder="Min " style="width: 4vw;" ></td><td><input type="number" name="end-hrs" placeholder="Hrs" style="width: 4vw;" required>: <input type="number" name="end-min" placeholder="Min" style="width: 4vw;" ></td></tr>
+    </table>
+    <p style="padding-left: 30vw;"><button type="submit" >Add</button></p>
+    <hr>
+    {% if data %}
+    <table>
+        <tr>
+            <td style="padding-right: 5vw;">Task</td><td style="padding-right: 3vw;"> Start </td><td>End</td>
+        </tr>
+        {% for id,task,start,end in data %}
+        <tr>
+            <td> {{task}} </td><td> {{start}} </td> <td> {{end}} </td><td><button name="del" value="{{id}}" formnovalidate>del</button></td>
+        </tr>
+        {% endfor %}
+    </table>
+    {% endif %}
+    </form>
+    <p ><a href="/dashboard"><button style="font-size: 1.5vw;">Setup</button></a></p>
+
+</body>

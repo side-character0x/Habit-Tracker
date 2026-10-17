@@ -1,0 +1,25 @@
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>History</title>
+</head>
+<body style="background-color: bisque;">
+    <h1 style="text-align: center; font-size: 4vw;margin-bottom: 0%;">Personal History</h1>
+    <h2 style="text-align: right;margin-top: 0%;">-Take a look at you daily effort..</h2>
+    <p style="font-size: 1.5vw;margin-top: 7vh;"><b>Select Date:</b></p>
+    <form action="/history" method="post">
+    <p><input type="date" name="date" max="{{today}}" min="{{first}}" value="{{today}}"></p>
+    <button type="submit">Submit</button>
+    </form>
+    <hr>
+    {% if checks %}
+    <table>
+        {% for id,task,start,end in data %}
+        <tr>
+            <td>{{task}} </td><td style="padding-left: 6vw;">{{start}} </td><td>-</td><td>{{end}} </td><td>{{" ✅" if id|string in checks else "❌"}} </td>
+        </tr>
+        {% endfor %}
+    </table>
+    {% endif %}
+    <p style="padding-left: 4vw; display: inline;"><a href="/dashboard"><button style="font-size: 2vw;" formnovalidate>Back</button></a></p>
+</body>

@@ -1,0 +1,18 @@
+<head>
+    <meta charsest="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-size=1.0">
+    <title>Login Page</title>
+</head>
+<body style="background-color: rgb(122, 144, 144);">
+    <h1 style="font-size: 4vw;text-align: center;padding-top: 3vh;">Let's Get You In!</h1>
+    <form action="/login" method="post">
+    {% if error %}
+    <p>Either username or pin is invalid!</p>
+    {% endif %}
+    <p>Username: <br> <input type="text" name="name" placeholder="Enter your username"  required>
+        <br><br>
+    Pin: <br> <input type="text" name="pin" placeholder="Enter your PIN" required></p>
+    <p><button  type="submit" style="font-size: 2.5vh;">Login</button></p>
+    <p>Haven't Registered Yet? <a href="/signin"> Register</a></p>
+    </form>
+</body>

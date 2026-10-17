@@ -1,0 +1,29 @@
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+</head>
+<body style="background-color: #F8FAFC;">
+    <h1 style="text-align: center; padding-top: 3vh; font-size: 4vw;">Personal Dashboard</h1>
+    <h2 style="font-size: 2.5vw;">Welcome {{username}} <br><p style="text-align: right;">Date: {{date}} </p></h2>
+    <h3 style="text-align: center; font-size: 3vw; margin-bottom: 0%;">Today's Task</h3>
+    <hr>
+    <form action="/dashboard" method="post">
+    <table  style="text-align: center;">
+        <tr>
+            <td></td><td>Task</td><td style="padding-left: 32vw;padding-right: 2vw;">Start </td><td style="padding-right: 2vw;">- </td><td> End</td>
+        </tr>
+        {% for id,task,start,end in data %}
+        <tr>
+            <td><input type="checkbox" name="{{id}}" value="{{id}}">  </td><td> {{task}} </td><td style="padding-left: 32vw;"> {{start}} </td><td> - </td><td> {{end}} </td>
+        </tr>
+        {% endfor %}
+    </table>
+    <button type="submit">submit</button>
+    <br>
+</form>
+<a href="/history"><button style="font-size: 2%;" formnovalidate>History</button></a>
+<p style="padding-left: 4vw; display: inline;"><a href="/summary"><button style="font-size: 2vw;" formnovalidate>Summarize</button></a></p>
+<p style="padding-left: 4vw; display: inline;"><a href="/login"><button style="font-size: 2vw;" formnovalidate>Back</button></a></p>
+
+</body>
