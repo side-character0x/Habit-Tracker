@@ -1,13 +1,22 @@
 import torch
 from transformers import AutoTokenizer, AutoModelForCausalLM
+import os
+import sys
 
 class Summarizer:
     def __init__(self,model_name="Qwen/Qwen2.5-0.5B-Instruct"):
         print("This might take some time.")
         print("Loading...")
         self.device="cuda" if torch.cuda.is_available() else "cpu"
-        self.tokenizer=AutoTokenizer.from_pretrained(model_name)
-        self.model=AutoModelForCausalLM.from_pretrained(model_name,torch_dtype="auto",device_map=self.device)
+
+        if getattr(sys, 'frozen', False):
+            local_path = os.path.join(sys._MEIPASS, "qwen_model")
+            self.tokenizer=AutoTokenizer.from_pretrained(local_path)
+            self.model=AutoModelForCausalLM.from_pretrained(local_path,torch_dtype="auto",device_map=self.device)
+        else:
+            self.tokenizer=AutoTokenizer.from_pretrained(model_name)
+            self.model=AutoModelForCausalLM.from_pretrained(model_name,torch_dtype="auto",device_map=self.device)
+
         self.model.eval()
     def summarize(self,task,checks):
         prompt=[
@@ -26,10 +35,11 @@ class Summarizer:
                 "content": f"schedule of the user:{task}. Completed tasks id of each days:{checks}"
             }
         ]
-        formatted_prompt=self.tokenizer.apply_chat_template(prompt,tokenize=True,add_generation_prompt=True,return_tensors="pt").to(self.device)
+        inputs=self.tokenizer.apply_chat_template(prompt,tokenize=True,add_generation_prompt=True,return_tensors="pt")
+        inputs = {k: v.to(self.device) for k, v in inputs.items()}
         with torch.no_grad():
-            outputs=self.model.generate(**formatted_prompt,max_new_tokens=350,do_sample=True,temperature=0.15,top_p=0.85,repetition_penalty=1.1,)
-        input_len=formatted_prompt["input_ids"].shape[1]
+            outputs=self.model.generate(**inputs,max_new_tokens=350,do_sample=True,temperature=0.15,top_p=0.85,repetition_penalty=1.1,)
+        input_len=inputs["input_ids"].shape[1]
         output_tokens=outputs[0][input_len:]
         summary=self.tokenizer.decode(output_tokens,skip_special_tokens=True).strip()
         return summary

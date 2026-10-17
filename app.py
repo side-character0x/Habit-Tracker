@@ -1,8 +1,19 @@
+import sys
+import os
+import threading
+import webbrowser
 from flask import Flask, render_template, request,session
 from db import Database
-from datetime import date
+from datetime import date,time
 from summerizer import Summarizer
-app=Flask(__name__)
+
+if getattr(sys, 'frozen', False):
+    base_path = sys._MEIPASS
+else:
+    base_path = os.path.dirname(os.path.abspath(__file__))
+
+template_folder = os.path.join(base_path, 'templates')
+app=Flask(__name__, template_folder=template_folder)
 app.secret_key = 'secret'
 summarizer=Summarizer()
 @app.route("/")
@@ -68,4 +79,9 @@ def summary():
     summary=summarizer.summarize(data,checks)
     return render_template("summary.html",summary=summary)
 
-app.run()
+def open_browser():
+    time.sleep(1.5)
+    webbrowser.open("http://127.0.0.1:5000")
+if __name__ == "__main__":
+    threading.Thread(target=open_browser, daemon=True).start()
+    app.run()
