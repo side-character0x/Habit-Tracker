@@ -41,8 +41,8 @@ class Summarizer:
                 "content": f"schedule of the user:{task}. Completed tasks id of each days:{checks}"
             }
         ]
-        inputs=self.tokenizer.apply_chat_template(prompt,tokenize=True,add_generation_prompt=True,return_tensors="pt")
-        inputs = {k: v.to(self.device) for k, v in inputs.items()}
+        formatted_text = self.tokenizer.apply_chat_template(prompt, tokenize=False, add_generation_prompt=True)
+        inputs=self.tokenizer(formatted_text,return_tensors="pt").to(self.device)
         with torch.no_grad():
             outputs=self.model.generate(**inputs,max_new_tokens=350,do_sample=True,temperature=0.15,top_p=0.85,repetition_penalty=1.1,)
         input_len=inputs["input_ids"].shape[1]
