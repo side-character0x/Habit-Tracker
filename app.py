@@ -6,7 +6,6 @@ from flask import Flask, render_template, request,session
 from db import Database
 from datetime import date
 import time
-from summerizer import Summarizer
 
 if getattr(sys, 'frozen', False):
     base_path = sys._MEIPASS

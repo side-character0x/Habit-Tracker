@@ -6,7 +6,7 @@ class Database:
         self.conn.row_factory=sqlite3.Row
         self.cur=self.conn.cursor()
         self.cur.execute("CREATE TABLE IF NOT EXISTS auth_data(username TEXT,pin TEXT,created_at TEXT)")
-        self.cur.execute("CREATE TABLE IF NOT EXISTS data(id INTEGER PRIMARY KEY,username TEXT,task TEXT, start TEXT, end TEXT)")
+        self.cur.execute("CREATE TABLE IF NOT EXISTS data(id INTEGER PRIMARY KEY AUTOINCREMENT,username TEXT,task TEXT, start TEXT, end TEXT)")
         self.cur.execute("CREATE TABLE IF NOT EXISTS checks(username TEXT,checked_id TEXT,date TEXT)")
     def add_user(self,username,pin,date):
         self.cur.execute("INSERT INTO auth_data(username,pin,created_at) VALUES(?,?,?)",(username,pin,date))
@@ -41,6 +41,7 @@ class Database:
         return [row["checked_id"] for row in checks]
     def delete_tasks(self,id):
         self.cur.execute("DELETE FROM data WHERE id=?",(id,))
+        self.cur.execute("DELETE FROM checks WHERE checked_id=?", (str(id),))
         self.conn.commit()
         self.conn.close()
     def get_all_checks(self,username):
