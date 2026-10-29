@@ -17,3 +17,8 @@ An app to track your daily habits and create a schedule for consistent days crea
 - SQLite
 - Qwen 0.5B (Local AI model)
 
+## Why I built this
+I built this because I needed a simple habit tracker that tracks my daily activities. I wanted a basic tool where I can schedule tasks, check them off, and see a simple summary of my consistency. I added a local AI summarizer because I wanted to see if a small local model could give me short, actionable feedback without needing an internet connection.
+
+## Known Issue
+I used "Qwen/Qwen2.5-0.5B-Instruct" model for the summary of the activities, but the model was not capable of interpreting the data perfectly, so there might appear the problem of imperfect summary.
