@@ -22,3 +22,6 @@ I built this because I needed a simple habit tracker that tracks my daily activi
 
 ## Known Issue
 I used "Qwen/Qwen2.5-0.5B-Instruct" model for the summary of the activities, but the model was not capable of interpreting the data perfectly, so there might appear the problem of imperfect summary.
+
+## how to run
+use the demo link and download the zip file and run the .exe file . and the internal folder should be in the same folder as the .exe file.
